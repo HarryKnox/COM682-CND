@@ -1,0 +1,9 @@
+#postBlock{
+    background-color: lavender;
+    padding-top: 10px;
+    border-radius: 5px;
+    border: 1px solid black;
+    width: 35%;
+    margin: auto;
+    margin-top: 15px;
+}

@@ -1,0 +1,94 @@
+
+<!-- Div block to show all posts in AZ Cosmos DB-->
+<div id="postBlock" style="margin-top: 75px;" *ngFor = "let post of posts | async">
+
+    <p>{{post.userName}} - {{post.userID}}</p>
+    <hr>
+    <p>{{post.fileName}}</p>
+  
+    <img src="https://com682blob.blob.core.windows.net{{post.filePath}}">
+
+    <br>
+
+    <button type="button" class="btn btn-outline-secondary" id="editBtn" 
+                (click) = "showEdit(post)">Edit</button>
+
+    <button type="button" class="btn btn-outline-secondary" id="delBtn" 
+                (click) = "showDel(post)">Delete</button>
+  
+  </div>
+  
+<!-- Form for adding a post -->
+<form [formGroup]="addPostForm" (ngSubmit)="onSubmit()" style="border-style:groove; margin-bottom: 50px;">
+  <br>
+  <h1>Add a Post:</h1>
+
+  <div class="form-group" style="padding: 10px;">
+    <label for="userName" class="required">User Name</label>
+    <input type="text" id="userName" name="userName" class="form-control" formControlName="userName"
+    [ngClass]="{'error' : isInvalid('userName')}">
+
+    <label for="userID" class="required">User ID</label>
+    <input type="text" id="userID" name="userID" class="form-control" formControlName="userID"
+    [ngClass]="{'error' : isInvalid('userID')}">
+
+    <label for="fileName" class="required">File Name</label>
+    <input type="text" id="fileName" name="fileName" class="form-control" formControlName="fileName"
+    [ngClass]="{'error' : isInvalid('fileName')}">
+
+    <label for="upFile" class="required">Image to Upload</label>
+    <input type="file" id="upFile" name="upFile" (change)="onFileSelect($event)">
+  </div> <!-- form group closed-->
+
+  <!-- add league form Validation -->
+  <span *ngIf = "isIncomplete()">
+    You must complete all fields
+  </span>
+
+  <button *ngIf="!isIncomplete()" type="submit" class="btn btn-primary">Submit</button>
+</form><!-- form closed-->
+
+
+
+  <!-- delete container modal -->
+  <div class="delContainer" *ngIf="showDelModal">
+    <div class="delBox">
+      <h4>Are you sure you want to delete this post?</h4>
+
+      <button (click)="onDelete()" class="btn btn-primary">Yes</button>
+      <button (click)="hideDel()" class="btn btn-primary">No</button>
+    </div> <!-- delete box closed-->
+  </div> <!-- delete container closed-->
+
+
+
+  <!-- edit container modal -->
+  <div class="editContainer" *ngIf="showEditModal">
+    <div class="editBox">
+        <h1>Edit</h1>
+        
+        <form [formGroup]="editForm" (ngSubmit)="onEdit()">
+
+          <label for="userName">User Name</label>
+          <input id="userName" name="userName" class="form-control" 
+          formControlName="userName" readonly="readonly">
+  
+          <label for="userID">User ID</label>
+          <input id="userID" name="userID" class="form-control" 
+          formControlName="userID" readonly="readonly">
+
+          <label for="fileName">File Name</label>
+          <input type="text" id="fileName" name="fileName" class="form-control" 
+          formControlName="fileName" [ngClass]="{'error' : isInvalid('fileName')}">
+  
+          <label for="upFile">File</label>
+          <input type="file" id="upFile" name="upFile" class="form-control" 
+          (change)="onFileSelect($event)">
+  
+          <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+  
+        <button (click)="hideEdit()" class="btn btn-primary">Close</button>
+  
+    </div> <!-- edit box closed-->
+   </div> <!-- edit box closed-->
