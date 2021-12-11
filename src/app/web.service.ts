@@ -13,7 +13,9 @@ export class WebService {
 
     // function to post a user's post to the Cosmos DB and file to Blob storage
     postUserPost(post : any){
- 
+        
+        console.log(post);
+
         let postData = new FormData();
 
         postData.append("fileName",post.fileName);

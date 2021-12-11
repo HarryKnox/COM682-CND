@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { WebService } from './web.service';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs';
 
 
 @Component({
@@ -39,7 +40,14 @@ export class userFeedComponent {
 
   // edit form var set to any
   editForm : any;
+  
+  // var to be set in <img src =...> edit box
+  addImg : any;
 
+  // var for holding img -> file conversion
+  imgFile : any;
+
+  myPng : any;
 
 
   ngOnInit(){
@@ -101,9 +109,6 @@ export class userFeedComponent {
       const file =  event.target.files[0];
 
       this.selectedFile = file;
-      // this.addPostForm.patchValue({
-      //   "upFile" : file
-      // })
     }
 
     // function that takes blobPath and postID and call a delete HTTP call, deleting a post
@@ -122,17 +127,22 @@ export class userFeedComponent {
       // old post deleted
       //this.webService.deleteUserPost(this.myPostPath,this.myPostID);
 
-      // new edited post is re-posted
-      //selected file set on edit postForm
+      // file from form input is set
       this.editForm.controls["upFile"].setValue(this.selectedFile);
 
+      // if no file selected then current file set
+      // if (this.editForm["upFile"] == undefined){
+      //   this.editForm.controls["upFile"].setValue(this.myPng);
+      // }
 
-      // // POST request sent, form is reset and all posts is refreshed
-      // this.webService.postUserPost(this.editForm.value)
-      //   .subscribe((response : any) =>{
-      //     this.editForm.reset();
-      //     this.posts = this.webService.getAllPosts();
-      //   })
+      console.log(this.editForm.value);
+
+      // POST request sent, form is reset and all posts is refreshed
+      this.webService.postUserPost(this.editForm.value)
+        .subscribe((response : any) =>{
+          this.editForm.reset();
+          this.posts = this.webService.getAllPosts();
+        })
     }
 
 
@@ -155,34 +165,42 @@ export class userFeedComponent {
   }
 
 
+
   // functions for edit modal appearance/disappearance
   showEdit(post:any){
+
+    //shows modal
     this.showEditModal = true;
-
-    // set selected file using post.filePath
-    //this.selectedFile=(this.http.get("https://com682blob.blob.core.windows.net"+post.filePath))
-
-    this.selectedFile = fetch("https://com682blob.blob.core.windows.net"+post.filePath).then(r=>
-    r.blob());
-
-    console.log(this.selectedFile);
+    
+    // go to top of page
+    window.scroll(0,0);
 
     this.editForm.patchValue({
       'userName' : post.userName,
       'userID' : post.userID,
-      'fileName' : post.fileName,
-      'upFile' : this.selectedFile
+      'fileName' : post.fileName
     })
 
     // post ID and path set 
-    this.myPostID = post.id
-    this.myPostPath = post.filePath
+    this.myPostID = post.id;
+    this.myPostPath = post.filePath;
 
+    // Insert current img to edit container
+    var imgFile = "https://com682blob.blob.core.windows.net"+post.filePath;
+    this.addImg = "<img src="+imgFile+">"
 
+    // current file taken from edit post box
+    this.myPng = new File([imgFile],'filename.png',{type:'image/png'});
 
-
+    
 
   }
+
+
+  
+
+  
+
   hideEdit(){
     this.showEditModal = false;
   }

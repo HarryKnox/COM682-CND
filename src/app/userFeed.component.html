@@ -65,8 +65,8 @@
   <!-- edit container modal -->
   <div class="editContainer" *ngIf="showEditModal">
     <div class="editBox">
-        <h1>Edit</h1>
-        
+        <h3 style="text-align: center;">Edit Post</h3>
+
         <form [formGroup]="editForm" (ngSubmit)="onEdit()">
 
           <label for="userName">User Name</label>
@@ -80,15 +80,19 @@
           <label for="fileName">File Name</label>
           <input type="text" id="fileName" name="fileName" class="form-control" 
           formControlName="fileName" [ngClass]="{'error' : isInvalid('fileName')}">
-  
-          <label for="upFile">File</label>
-          <input type="file" id="upFile" name="upFile" class="form-control" 
+
+          <label>Current File :</label>
+          <div [innerHtml]="addImg"></div>
+          <br>
+          <label>Upload something to edit image.</label>
+          <input type="file" id="upFile" name="upFile"
           (change)="onFileSelect($event)">
-  
+          <br>
+          <br>
           <button type="submit" class="btn btn-primary">Save</button>
-        </form>
+        
   
         <button (click)="hideEdit()" class="btn btn-primary">Close</button>
-  
+      </form>
     </div> <!-- edit box closed-->
    </div> <!-- edit box closed-->
