@@ -124,25 +124,34 @@ export class userFeedComponent {
     // function for editing a post
     onEdit() {
 
-      // old post deleted
-      //this.webService.deleteUserPost(this.myPostPath,this.myPostID);
-
       // file from form input is set
       this.editForm.controls["upFile"].setValue(this.selectedFile);
 
-      // if no file selected then current file set
-      // if (this.editForm["upFile"] == undefined){
-      //   this.editForm.controls["upFile"].setValue(this.myPng);
-      // }
 
-      console.log(this.editForm.value);
+      // POST request sent if no new file provided
+      if (this.editForm.value["upFile"] == undefined){
+        this.webService.postUserEdit(this.editForm.value,this.myPostPath)
+          .subscribe((response : any) =>{
+            this.editForm.reset();
+          })
+      } // if closed
 
-      // POST request sent, form is reset and all posts is refreshed
-      this.webService.postUserPost(this.editForm.value)
+      // POST request sent if a new file provided
+      else{
+        this.webService.postUserPost(this.editForm.value)
         .subscribe((response : any) =>{
           this.editForm.reset();
-          this.posts = this.webService.getAllPosts();
         })
+      }
+
+      // old post deleted
+      this.webService.deleteUserPost(this.myPostPath,this.myPostID)
+      .subscribe((response : any) => {
+        this.ngOnInit();
+      })
+
+      // edit modal hidden
+      this.hideEdit();
     }
 
 
@@ -188,12 +197,6 @@ export class userFeedComponent {
     // Insert current img to edit container
     var imgFile = "https://com682blob.blob.core.windows.net"+post.filePath;
     this.addImg = "<img src="+imgFile+">"
-
-    // current file taken from edit post box
-    this.myPng = new File([imgFile],'filename.png',{type:'image/png'});
-
-    
-
   }
 
 
