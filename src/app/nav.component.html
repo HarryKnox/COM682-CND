@@ -16,16 +16,16 @@
         </ul>
 
         <div class = "form-inline ms-auto" style = "margin-right: 10px;">
-            <!-- <ng-container *ngIf = "authService.isAuthenticated$ | async; else loggedOut">
+            <ng-container *ngIf = "authService.isAuthenticated$ | async; else loggedOut">
                 <button class="btn btn-outline-light" (click) = "authService.logout()">Logout</button>
-            </ng-container> -->
+            </ng-container> 
 
-            <!-- <ng-template #loggedOut>
+            <ng-template #loggedOut>
                 <button class="btn btn-outline-light" 
                 (click) = "authService.loginWithRedirect(
                     {appState : { target : this.router.url}}
                 )">Login</button>
-            </ng-template> -->
+            </ng-template>
         </div>
 
 </div>

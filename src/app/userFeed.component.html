@@ -17,7 +17,9 @@
                 (click) = "showDel(post)">Delete</button>
   
   </div>
-  
+
+<ng-container *ngIf = "authService.isAuthenticated$ | async;
+else loggedOut">
 <!-- Form for adding a post -->
 <form [formGroup]="addPostForm" (ngSubmit)="onSubmit()" style="border-style:groove; margin-bottom: 50px;">
   <br>
@@ -47,8 +49,11 @@
 
   <button *ngIf="!isIncomplete()" type="submit" class="btn btn-primary">Submit</button>
 </form><!-- form closed-->
+</ng-container>
 
-
+<ng-template #loggedOut>
+  <h2>Please login to review this business</h2>
+</ng-template> 
 
   <!-- delete container modal -->
   <div class="delContainer" *ngIf="showDelModal">

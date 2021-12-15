@@ -9,6 +9,7 @@ import { HomeComponent } from './home.component';
 import { userFeedComponent } from './userFeed.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NavComponent } from './nav.component';
+import { AuthModule } from '@auth0/auth0-angular';
 
 
 
@@ -31,7 +32,11 @@ var routes: any = [
   imports: [
     BrowserModule, HttpClientModule,
     RouterModule.forRoot(routes),
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AuthModule.forRoot({
+      domain : 'dev-7r2t6u-n.us.auth0.com',
+      clientId : 'mOMRIbmUbjDhNzn3cG6AQAX4koc2yLXu'
+    })
   ],
   providers: [WebService],
   bootstrap: [AppComponent]

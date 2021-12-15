@@ -2,8 +2,7 @@ import { Component } from '@angular/core';
 import { WebService } from './web.service';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs';
-
+import { AuthService } from '@auth0/auth0-angular';
 
 @Component({
   selector: 'userFeed',
@@ -13,7 +12,8 @@ import { map } from 'rxjs';
 export class userFeedComponent {
   constructor(private webService: WebService,
     private formBuilder : FormBuilder,
-    private http : HttpClient){}
+    private http : HttpClient,
+    public authService: AuthService){}
 
 
   // webpage title
