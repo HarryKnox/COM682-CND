@@ -35,7 +35,7 @@ var routes: any = [
     ReactiveFormsModule,
     AuthModule.forRoot({
       domain : 'dev-7r2t6u-n.us.auth0.com',
-      clientId : 'mOMRIbmUbjDhNzn3cG6AQAX4koc2yLXu'
+      clientId : 'qPFVtJ5Z9ZhoqcJtr7ba0WauPeEx7MRC'
     })
   ],
   providers: [WebService],
