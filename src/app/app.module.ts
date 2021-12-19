@@ -10,7 +10,7 @@ import { userFeedComponent } from './userFeed.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NavComponent } from './nav.component';
 import { AuthModule } from '@auth0/auth0-angular';
-
+import { DatePipe } from '@angular/common';
 
 
 var routes: any = [
@@ -38,7 +38,7 @@ var routes: any = [
       clientId : 'qPFVtJ5Z9ZhoqcJtr7ba0WauPeEx7MRC'
     })
   ],
-  providers: [WebService],
+  providers: [WebService,DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

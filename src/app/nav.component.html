@@ -5,12 +5,15 @@
                 <a class="nav-link" routerLink='/'>Home</a>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link" routerLink='/feed'>Social Feed</a>
+            <li>
+                <ng-container *ngIf = "authService.isAuthenticated$ | async;">
+                    <a class="nav-link" routerLink='/'>My Profile</a>
+                </ng-container> 
             </li>
 
-            <li>
 
+            <li class="nav-item">
+                    <a class="nav-link" routerLink='/feed'>My Social Feed</a>
             </li>
 
         </ul>
