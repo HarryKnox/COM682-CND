@@ -256,26 +256,31 @@ export class userFeedComponent {
 
 
   // function to add a logged in user to the Users Cosmos DB
-  addUser(){
+  async addUser(){
 
     // check that user info has been found
     if(this.userInfo!=null){
+      
+      var allMyUsers:any = await this.webService.getAllUsers();
+      console.log("debug1");
+      if(allMyUsers[0].id != this.userInfo.sub){
+        console.log("debug2");
+        let userData = new FormData();
 
-      // check that user isn't already added
-      this.allUsers = this.webService.getAllUsers()
-    
-      let userData = new FormData();
+        userData.append("userName", this.userInfo.name);
+        userData.append("userID", this.userInfo.sub);
+        userData.append("email", this.userInfo.email);
+        userData.append("profilePic", this.userInfo.picture);
+  
+        //user added to DB
+        this.webService.addUser(userData)
+        .subscribe((response : any) => {
+          this.ngOnInit();
+        })
 
-      userData.append("userName", this.userInfo.name);
-      userData.append("userID", this.userInfo.sub);
-      userData.append("email", this.userInfo.email);
-      userData.append("profilePic", this.userInfo.picture);
 
-      // user added to DB
-      // this.webService.addUser(userData)
-      // .subscribe((response : any) => {
-      //   this.ngOnInit();
-      // })
+      }
+
     }
   }
 

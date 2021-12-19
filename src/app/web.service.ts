@@ -60,7 +60,7 @@ export class WebService {
 
     // function to get all users from the cosmos DB
     getAllUsers(){
-        return this.http.get("https://prod-127.westeurope.logic.azure.com:443/workflows/742289d76471459687550d10e0772b6f/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=_Izco_BiFf3fsBOFcGLOjHh9i5vbeb1mV5szdAf3K4Q").toPromise();
+        return this.http.get("https://prod-175.westeurope.logic.azure.com:443/workflows/2f115536a8a14de2b71dea6b151a2183/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=RcABIOSo7M8LQs6h4bJj36irJZD1HRd4LAar_ZtrS1o").toPromise();
     }
 
 
