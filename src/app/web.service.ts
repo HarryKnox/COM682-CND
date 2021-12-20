@@ -30,10 +30,11 @@ export class WebService {
 
     // function to delete a user's post img from Blob storage + delete item from Cosmos DB
     deleteUserPost(path:any, postID:any){
+
         let delData =  new FormData();
         delData.append("filePath",path);
         delData.append("id",postID);
-  
+
         return this.http.post("https://prod-205.westeurope.logic.azure.com:443/workflows/5013b90a9dfb4fce84070eddf633f705/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=fi9D5zrRYfCu9PLqPvP9t0eoxl1-BgN5iuvtfw46tSA",delData);
     }
 

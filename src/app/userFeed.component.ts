@@ -166,6 +166,7 @@ export class userFeedComponent {
     // function for editing a post
     onEdit() {
 
+
       // file from form input is set
       this.editForm.controls["upFile"].setValue(this.selectedFile);
       this.editForm.controls["userID"].setValue(this.userInfo.sub);
@@ -176,6 +177,7 @@ export class userFeedComponent {
         this.webService.postUserEdit(this.editForm.value,this.myPostPath)
           .subscribe((response : any) =>{
             this.editForm.reset();
+            this.deleteAfterEdit();
           })
       } // if closed
 
@@ -183,18 +185,22 @@ export class userFeedComponent {
       else{
         this.webService.postUserPost(this.editForm.value)
         .subscribe((response : any) =>{
-          this.editForm.reset();
+          this.editForm.reset(); 
+          this.deleteAfterEdit();
         })
       }
 
-      // old post deleted
+
+      // edit modal hidden
+      this.hideEdit();
+    }
+
+    // function to delete a post after it has been edited + reposted
+    deleteAfterEdit(){
       this.webService.deleteUserPost(this.myPostPath,this.myPostID)
       .subscribe((response : any) => {
         this.ngOnInit();
       })
-
-      // edit modal hidden
-      this.hideEdit();
     }
 
 
@@ -260,11 +266,22 @@ export class userFeedComponent {
 
     // check that user info has been found
     if(this.userInfo!=null){
+
+      // boolean to see if user in user DB
+      var userCheck = false;
       
+      // gets all current users
       var allMyUsers:any = await this.webService.getAllUsers();
-      console.log("debug1");
-      if(allMyUsers[0].id != this.userInfo.sub){
-        console.log("debug2");
+
+      // checks if user already exists
+      for(var userIndex in allMyUsers){
+        if (allMyUsers[userIndex].id == this.userInfo.sub){
+          userCheck = true;
+        }
+      }
+      
+      // if user not in db 
+      if(userCheck == false){
         let userData = new FormData();
 
         userData.append("userName", this.userInfo.name);
@@ -277,12 +294,9 @@ export class userFeedComponent {
         .subscribe((response : any) => {
           this.ngOnInit();
         })
-
-
       }
-
     }
-  }
+  } // add user function closed
 
 
 
