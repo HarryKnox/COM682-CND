@@ -12,22 +12,28 @@
 
 <body>
 
+  <div style="margin-top: 100px;">
+    <button type="button" class="btn btn-primary" (click)=setFeedUser()>
+      View Followed User Posts
+    </button>
+
+    <button type="button" class="btn btn-primary" (click)=setFeedAll()>
+      View All User Posts
+    </button>
+
+  </div>
+
   <!-- Div block to show all posts in AZ Cosmos DB-->
   <div id="postBlock" style="margin-top: 100px;" *ngFor = "let post of posts | async">
 
-
     <p>{{post.userName}}</p>
     <p>{{fixDate(post.postDate)}}</p>
-
-    <ng-container *ngIf = "authService.isAuthenticated$ | async;">
-      <button type="button" class="btn btn-info" id="followBtn" 
-      (click) = "followUser(post)">Follow User</button>
-    </ng-container>
 
     <hr>
     <p>{{post.postText}}</p>
     <hr>
     <p>{{post.fileName}}</p>
+
 
 
     <img src="https://com682blob.blob.core.windows.net{{post.filePath}}">
@@ -42,41 +48,6 @@
                   (click) = "showDel(post)">Delete</button>
     </ng-container>
   </div>
-
-  <br>
-
-  <ng-container *ngIf = "authService.isAuthenticated$ | async; else loggedOut1">
-  <!-- Form for adding a post -->
-  <form [formGroup]="addPostForm" (ngSubmit)="onSubmit()" style="border-style:groove; margin-bottom: 50px;">
-    <br>
-    <h1>Add a Post:</h1>
-
-    <div class="form-group" style="padding: 10px;">
-
-      <label for="postText" class="required">Tell us about your image...</label>
-      <input type="text" id="postText" name="postText" class="form-control" formControlName="postText"
-      [ngClass]="{'error' : isInvalid('postText')}">
-
-      <label for="fileName" class="required">File Name</label>
-      <input type="text" id="fileName" name="fileName" class="form-control" formControlName="fileName"
-      [ngClass]="{'error' : isInvalid('fileName')}">
-
-      <label for="upFile" class="required">Image to Upload</label>
-      <input type="file" id="upFile" name="upFile" (change)="onFileSelect($event)">
-    </div> <!-- form group closed-->
-
-    <!-- add league form Validation -->
-    <span *ngIf = "isIncomplete()">
-      You must complete all fields
-    </span>
-
-    <button *ngIf="!isIncomplete()" type="submit" class="btn btn-primary">Submit</button>
-  </form><!-- form closed-->
-  </ng-container>
-
-  <ng-template #loggedOut1>
-    <h2>Please login to add a post.</h2>
-  </ng-template> 
 
     <!-- delete container modal -->
     <div class="delContainer" *ngIf="showDelModal">
@@ -124,5 +95,6 @@
         </form>
       </div> <!-- edit box closed-->
     </div> <!-- edit box closed-->
-    
+
+
 </body>

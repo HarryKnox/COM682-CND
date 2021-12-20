@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 
@@ -55,7 +55,7 @@ export class WebService {
     }
 
     // adds a logged in user to the user's DB
-    addUser(userForm:any){
+    addUser(userForm : any){
         return this.http.post("https://prod-167.westeurope.logic.azure.com:443/workflows/c733c9a7d75b4748b48243e0ab18542f/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=CnlqWbQqyhTUQQWNfASQPaewurhnicTSyxs5WFj83G8",userForm);
     }
 
@@ -64,5 +64,18 @@ export class WebService {
         return this.http.get("https://prod-175.westeurope.logic.azure.com:443/workflows/2f115536a8a14de2b71dea6b151a2183/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=RcABIOSo7M8LQs6h4bJj36irJZD1HRd4LAar_ZtrS1o").toPromise();
     }
 
+    // function to follow a user
+    followUser(followForm : any){
+        return this.http.post("https://prod-128.westeurope.logic.azure.com:443/workflows/3dd6d46664324b8487df1b1cb5ce4349/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=QfOyQX8xErbyH0aQdVzF-Cz9pruT4OH-gNoCwylXOMY",followForm);
+    }
+
+    // function to get all posts, from a users followed accounts
+    getAllPostsFollowing(userID : any){
+
+        let params = new HttpParams()
+        .set("userID",userID);
+
+        return this.http.get("https://prod-31.westeurope.logic.azure.com:443/workflows/9dd6ddb3229f488fad71202b5063f87f/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=r1E_t7xoADl32l3ml5ADJqtwwCK4oX1I78496X_C6IA",{params: params});
+    }
 
 }

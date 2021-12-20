@@ -7,13 +7,20 @@
 
             <li>
                 <ng-container *ngIf = "authService.isAuthenticated$ | async;">
-                    <a class="nav-link" routerLink='/'>My Profile</a>
+                    <a class="nav-link" (click)="getUserInfo()" routerLink='/'>My Profile</a>
                 </ng-container> 
             </li>
 
 
             <li class="nav-item">
-                    <a class="nav-link" routerLink='/feed'>My Social Feed</a>
+                    <a class="nav-link" (click)="getUserInfo()" routerLink='/feed'>All Social Feed</a>
+            </li>
+
+            
+            <li class="nav-item">
+                <ng-container *ngIf = "authService.isAuthenticated$ | async;">
+                    <a class="nav-link" (click)="getUserInfo()" routerLink='/following'>Following</a>
+                </ng-container>
             </li>
 
         </ul>

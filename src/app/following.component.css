@@ -1,0 +1,51 @@
+#postBlock{
+    background-color: lavender;
+    padding-top: 10px;
+    border-radius: 5px;
+    border: 1px solid black;
+    width: 35%;
+    margin: auto;
+    margin-top: 15px;
+    margin-bottom: 50px;
+}
+
+.delBox{
+    height: 200px;
+    width: 200px;
+    background-color: royalblue;
+    border-radius: 5px;
+    padding: 15px;
+}
+
+.delContainer{
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: rgb(1,1,1,0.7);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.editBox{
+    height: 700px;
+    width: 500px;
+    background-color: royalblue;
+    border-radius: 5px;
+    padding: 15px;
+}
+
+.editContainer{
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: rgb(1,1,1,0.7);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

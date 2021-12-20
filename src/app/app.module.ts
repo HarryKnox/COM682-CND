@@ -11,6 +11,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NavComponent } from './nav.component';
 import { AuthModule } from '@auth0/auth0-angular';
 import { DatePipe } from '@angular/common';
+import { followingComponent} from './following.component';
 
 
 var routes: any = [
@@ -22,12 +23,17 @@ var routes: any = [
   {
     path : 'feed',
     component : userFeedComponent
+  },
+
+  {
+    path : 'following',
+    component : followingComponent    
   }
 ];
 
 @NgModule({
   declarations: [
-    AppComponent, HomeComponent, userFeedComponent, NavComponent
+    AppComponent, HomeComponent, userFeedComponent, NavComponent, followingComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,

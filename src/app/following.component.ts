@@ -5,15 +5,16 @@ import { HttpClient } from '@angular/common/http';
 import { AuthService } from '@auth0/auth0-angular';
 import * as moment from 'moment';
 import { DatePipe } from '@angular/common';
+import { Subject } from 'rxjs';
 
 
 
 @Component({
-  selector: 'userFeed',
-  templateUrl: './userFeed.component.html',
-  styleUrls: ['./userFeed.component.css']
+  selector: 'following',
+  templateUrl: './following.component.html',
+  styleUrls: ['./following.component.css']
 })
-export class userFeedComponent {
+export class followingComponent {
   constructor(private webService: WebService,
     private formBuilder : FormBuilder,
     private http : HttpClient,
@@ -61,12 +62,28 @@ export class userFeedComponent {
   // array to hold all users
   allUsers : any = [];
 
+  feedType = "all";
+
+  following : any;
+
+
 
 
   ngOnInit(){
     
     // calls function to get all Posts
-    this.posts = this.webService.getAllPosts();
+    //this.posts = this.webService.getAllPosts();
+
+    if(this.feedType=="user"){
+
+      this.getFollowing();
+
+      this.posts = this.webService.getAllPostsFollowing(this.following);
+    }
+
+    else{
+      this.posts = this.webService.getAllPosts();
+    }
 
     // get form builder data, for adding a post
     this.addPostForm = this.formBuilder.group({
@@ -92,12 +109,15 @@ export class userFeedComponent {
     this.authService.user$.subscribe(
       (profile) => this.userInfo = (profile));
 
+
     // calls function to get all Users
     this.allUsers = this.webService.getAllUsers();
   }
 
 
 
+
+  
 
   // function to fix each date type,to how long ago
   fixDate(aDate:any){
@@ -136,11 +156,9 @@ export class userFeedComponent {
     }
     
     isUntouched(){
-      //console.log("debug2")
       return this.addPostForm.controls.fileName.pristine;
     }
     isIncomplete(){
-      //console.log("debug3")
       return this.isInvalid('fileName') ||
              this.isInvalid('postText')||
              this.isUntouched();
@@ -230,6 +248,7 @@ export class userFeedComponent {
   // functions for edit modal appearance/disappearance
   showEdit(post:any){
 
+
     //shows modal
     this.showEditModal = true;
     
@@ -283,8 +302,6 @@ export class userFeedComponent {
       if(userCheck == false){
         let userData = new FormData();
 
-        var emptyArray = [];
-
         userData.append("userName", this.userInfo.name);
         userData.append("userID", this.userInfo.sub);
         userData.append("email", this.userInfo.email);
@@ -318,6 +335,33 @@ export class userFeedComponent {
     // not very elegant way of doing this but it works
     this.addUser();
   }
+
+  
+
+  async setFeedUser(){
+    this.feedType="user";
+    this.ngOnInit();
+  }
+
+  async setFeedAll(){
+    this.feedType="all";
+    this.ngOnInit();
+  }
+
+
+  async getFollowing(){
+
+    // gets all current users
+    var allMyUsers:any = await this.webService.getAllUsers();
+
+    // checks if user already exists
+    for(var userIndex in allMyUsers){
+      if (allMyUsers[userIndex].id == this.userInfo.sub){
+        this.following = allMyUsers[userIndex].following;
+      }
+    }
+  }
+
 
 
 
