@@ -5,7 +5,8 @@ import { HttpClient } from '@angular/common/http';
 import { AuthService } from '@auth0/auth0-angular';
 import * as moment from 'moment';
 import { DatePipe } from '@angular/common';
-import { Subject } from 'rxjs';
+import { Subject, zip } from 'rxjs';
+import { map } from 'rxjs/operators'
 
 
 
@@ -73,12 +74,37 @@ export class followingComponent {
     
     // calls function to get all Posts
     //this.posts = this.webService.getAllPosts();
-
+    
     if(this.feedType=="user"){
 
+      // followed users set to string
       this.getFollowing();
 
-      this.posts = this.webService.getAllPostsFollowing(this.following);
+      var firstIDposts : any;
+
+      // if multiple followed then split by comma
+      if (this.following.includes(',')){        
+        var ids = this.following;
+        ids =  ids.split(',');
+        this.following = ids;
+      }
+
+      // loop through for each followed ID
+      for(var id in this.following){
+
+        // first id set
+        if (id == "0"){
+          firstIDposts = this.webService.getAllPostsFollowing(this.following[id]);
+        }
+        // ids after first are merged
+        else{
+          zip(firstIDposts,this.webService.getAllPostsFollowing(this.following[id]))
+          .pipe(map(x => x.flat()))
+          .subscribe(data => firstIDposts=data)
+        }
+      }
+      // posts set
+      this.posts = firstIDposts;
     }
 
     else{
@@ -360,6 +386,7 @@ export class followingComponent {
         this.following = allMyUsers[userIndex].following;
       }
     }
+
   }
 
 
