@@ -11,9 +11,14 @@ export class WebService {
         return this.http.get("https://prod-127.westeurope.logic.azure.com:443/workflows/742289d76471459687550d10e0772b6f/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=_Izco_BiFf3fsBOFcGLOjHh9i5vbeb1mV5szdAf3K4Q");
     }
 
+    // function to get all video posts from AZ Cosmos DB
+    getAllVideoPosts(){
+        return this.http.get("https://prod-87.westeurope.logic.azure.com:443/workflows/8d6be9aaf6bf44e0bafe4dbcb3914537/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=ALbfM6pg8td8WamJ5ESCI0OM85aDdHIcyQuoR1kMeZw");
+    }
+
     // function to post a user's post to the Cosmos DB and file to Blob storage
     postUserPost(post : any){
-        
+
         let postData = new FormData();
 
         postData.append("fileName",post.fileName);
@@ -22,6 +27,7 @@ export class WebService {
         postData.append("File",post.upFile);
         postData.append("postText",post.postText);
         postData.append("date",post.date);
+        postData.append("fileType",post.upFile.type);
 
         return this.http.post("https://prod-12.ukwest.logic.azure.com:443/workflows/99f3e108aacf4ee0a7ba480b86125e9c/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=Cew4GEukuNNyJ40GSTbf9h7BIvAo-gD2VdXgaa5FgCI",postData);
 
@@ -50,6 +56,7 @@ export class WebService {
         postData.append("blobPath", blobPath);
         postData.append("postText",post.postText);
         postData.append("date",post.date);
+        postData.append("fileType",post.upFile.type);
 
         return this.http.post("https://prod-12.ukwest.logic.azure.com:443/workflows/99f3e108aacf4ee0a7ba480b86125e9c/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=Cew4GEukuNNyJ40GSTbf9h7BIvAo-gD2VdXgaa5FgCI",postData);
     }

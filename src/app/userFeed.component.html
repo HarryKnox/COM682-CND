@@ -29,8 +29,9 @@
     <hr>
     <p>{{post.fileName}}</p>
 
-
     <img src="https://com682blob.blob.core.windows.net{{post.filePath}}">
+
+
 
     <br>
 
@@ -42,6 +43,42 @@
                   (click) = "showDel(post)">Delete</button>
     </ng-container>
   </div>
+
+    <!-- Div block to show all video posts in AZ Cosmos DB-->
+    <div id="postBlock" style="margin-top: 100px;" *ngFor = "let vpost of videoPosts | async">
+
+
+      <p>{{vpost.userName}}</p>
+      <p>{{fixDate(vpost.postDate)}}</p>
+  
+      <ng-container *ngIf = "authService.isAuthenticated$ | async;">
+        <button type="button" class="btn btn-info" id="followBtn" 
+        (click) = "followUser(vpost)">Follow User</button>
+      </ng-container>
+  
+      <hr>
+      <p>{{vpost.postText}}</p>
+      <hr>
+      <p>{{vpost.fileName}}</p>
+
+      <video width="320" height="240" controls>
+        <source src="https://com682blob.blob.core.windows.net{{vpost.filePath}}">
+        Your browser does not support the video tag.
+      </video>
+  
+  
+      
+  
+      <br>
+  
+      <ng-container *ngIf = "authService.isAuthenticated$ | async;">
+        <button type="button" class="btn btn-outline-secondary" id="editBtn" 
+                    (click) = "showEdit(vpost)">Edit</button>
+  
+        <button type="button" class="btn btn-outline-secondary" id="delBtn" 
+                    (click) = "showDel(vpost)">Delete</button>
+      </ng-container>
+    </div>
 
   <br>
 

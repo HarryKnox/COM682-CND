@@ -61,12 +61,18 @@ export class userFeedComponent {
   // array to hold all users
   allUsers : any = [];
 
+  // array to hold all video posts
+  videoPosts : any = [];
+
 
 
   ngOnInit(){
     
-    // calls function to get all Posts
+    // calls function to get all img Posts
     this.posts = this.webService.getAllPosts();
+
+    // calls function get video posts
+    this.videoPosts = this.webService.getAllVideoPosts();
 
     // get form builder data, for adding a post
     this.addPostForm = this.formBuilder.group({
