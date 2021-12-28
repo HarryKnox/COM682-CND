@@ -47,6 +47,8 @@ export class WebService {
     // makes an edit to a user post
     postUserEdit(post : any, blobPath : any){
 
+        
+
         let postData = new FormData();
 
         postData.append("fileName",post.fileName);
@@ -56,7 +58,15 @@ export class WebService {
         postData.append("blobPath", blobPath);
         postData.append("postText",post.postText);
         postData.append("date",post.date);
-        postData.append("fileType",post.upFile.type);
+
+        if(post.upFile==undefined){
+            postData.append("fileType","image/jpeg");
+            
+        }
+        else{
+            postData.append("fileType",post.upFile.type);
+        }
+        
 
         return this.http.post("https://prod-12.ukwest.logic.azure.com:443/workflows/99f3e108aacf4ee0a7ba480b86125e9c/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=Cew4GEukuNNyJ40GSTbf9h7BIvAo-gD2VdXgaa5FgCI",postData);
     }
