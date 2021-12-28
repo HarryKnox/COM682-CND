@@ -85,4 +85,16 @@ export class WebService {
         return this.http.get("https://prod-31.westeurope.logic.azure.com:443/workflows/9dd6ddb3229f488fad71202b5063f87f/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=r1E_t7xoADl32l3ml5ADJqtwwCK4oX1I78496X_C6IA",{params: params});
     }
 
+    // function to post a comment
+    postComment(commentForm : any, postPath : any){
+
+        let postData = new FormData();
+
+        postData.append("userName", commentForm.userName);
+        postData.append("commentText", commentForm.commentText);
+        postData.append("postPath", postPath);
+
+        return this.http.post("https://prod-140.westeurope.logic.azure.com:443/workflows/8a79b8c51ee64aee84da4ee8b7eb57b2/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=wBuWQAa4RNV7XZJUM6fG3YW7nmeMZDfgDkg1WIVYBH0",postData);
+    }
+
 }

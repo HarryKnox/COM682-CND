@@ -31,17 +31,23 @@
 
     <img src="https://com682blob.blob.core.windows.net{{post.filePath}}">
 
-
-
     <br>
 
     <ng-container *ngIf = "authService.isAuthenticated$ | async;">
       <button type="button" class="btn btn-outline-secondary" id="editBtn" 
-                  (click) = "showEdit(post)">Edit</button>
+                  (click) = "showEdit(post)">Edit Post</button>
 
       <button type="button" class="btn btn-outline-secondary" id="delBtn" 
-                  (click) = "showDel(post)">Delete</button>
+                  (click) = "showDel(post)">Delete Post</button>
+
+      <button type="button" class="btn btn-outline-secondary" id="commentBtn" 
+      (click) = "showComment(post)">Comment</button>
     </ng-container>
+    <br>
+    <div>
+      <p>Comments :</p>
+      <p>{{post.comments}}</p>
+    </div>
   </div>
 
     <!-- Div block to show all video posts in AZ Cosmos DB-->
@@ -77,7 +83,14 @@
   
         <button type="button" class="btn btn-outline-secondary" id="delBtn" 
                     (click) = "showDel(vpost)">Delete</button>
+        <button type="button" class="btn btn-outline-secondary" id="commentBtn" 
+        (click) = "showComment(vpost)">Comment</button>
       </ng-container>
+      <br>
+      <div>
+        <p>Comments :</p>
+        <p>{{vpost.comments}}</p>
+      </div>
     </div>
 
   <br>
@@ -115,51 +128,74 @@
     <h2>Please login to add a post.</h2>
   </ng-template> 
 
-    <!-- delete container modal -->
-    <div class="delContainer" *ngIf="showDelModal">
-      <div class="delBox">
-        <h4>Are you sure you want to delete this post?</h4>
+  <!-- delete container modal -->
+  <div class="delContainer" *ngIf="showDelModal">
+    <div class="delBox">
+      <h4>Are you sure you want to delete this post?</h4>
 
-        <button (click)="onDelete()" class="btn btn-primary">Yes</button>
-        <button (click)="hideDel()" class="btn btn-primary">No</button>
-      </div> <!-- delete box closed-->
-    </div> <!-- delete container closed-->
-
-
-
-    <!-- edit container modal -->
-    <div class="editContainer" *ngIf="showEditModal">
-      <div class="editBox">
-          <h3 style="text-align: center;">Edit Post</h3>
-
-          <form [formGroup]="editForm" (ngSubmit)="onEdit()">
-
-            <label for="userName">User Name</label>
-            <input id="userName" name="userName" class="form-control" 
-            formControlName="userName" readonly="readonly">
-            
-            <label for="postText">Post Text</label>
-            <input type="text" id="postText" name="postText" class="form-control" 
-            formControlName="postText" [ngClass]="{'error' : isInvalid('postText')}">
+      <button (click)="onDelete()" class="btn btn-primary">Yes</button>
+      <button (click)="hideDel()" class="btn btn-primary">No</button>
+    </div> <!-- delete box closed-->
+  </div> <!-- delete container closed-->
 
 
-            <label for="fileName">File Name</label>
-            <input type="text" id="fileName" name="fileName" class="form-control" 
-            formControlName="fileName" [ngClass]="{'error' : isInvalid('fileName')}">
 
-            <label>Current File :</label>
-            <div [innerHtml]="addImg"></div>
-            <br>
-            <label>Upload something to edit image.</label>
-            <input type="file" id="upFile" name="upFile"
-            (change)="onFileSelect($event)">
-            <br>
-            <br>
-            <button type="submit" class="btn btn-primary">Save</button>
+  <!-- edit container modal -->
+  <div class="editContainer" *ngIf="showEditModal">
+    <div class="editBox">
+        <h3 style="text-align: center;">Edit Post</h3>
+
+        <form [formGroup]="editForm" (ngSubmit)="onEdit()">
+
+          <label for="userName">User Name</label>
+          <input id="userName" name="userName" class="form-control" 
+          formControlName="userName" readonly="readonly">
           
-          <button (click)="hideEdit()" class="btn btn-primary">Close</button>
-        </form>
-      </div> <!-- edit box closed-->
+          <label for="postText">Post Text</label>
+          <input type="text" id="postText" name="postText" class="form-control" 
+          formControlName="postText" [ngClass]="{'error' : isInvalid('postText')}">
+
+
+          <label for="fileName">File Name</label>
+          <input type="text" id="fileName" name="fileName" class="form-control" 
+          formControlName="fileName" [ngClass]="{'error' : isInvalid('fileName')}">
+
+          <label>Current File :</label>
+          <div [innerHtml]="addImg"></div>
+          <br>
+          <label>Upload something to edit image.</label>
+          <input type="file" id="upFile" name="upFile"
+          (change)="onFileSelect($event)">
+          <br>
+          <br>
+          <button type="submit" class="btn btn-primary">Save</button>
+        
+        <button (click)="hideEdit()" class="btn btn-primary">Close</button>
+      </form>
     </div> <!-- edit box closed-->
+  </div> <!-- edit box closed-->
+
+
+  <!-- comment container modal -->
+  <div class="commentContainer" *ngIf="showCommentModal">
+    <div class="commentBox">
+        <h3 style="text-align: center;">Add a Comment</h3>
+
+        <form [formGroup]="commentForm" (ngSubmit)="onComment()">
+          
+          <label for="commentText">Comment Text</label>
+          <input type="text" id="commentText" name="commentText" class="form-control" 
+          formControlName="commentText">
+
+          <button type="submit" class="btn btn-primary">Save</button>
+        
+        <button (click)="hideComment()" class="btn btn-primary">Close</button>
+      </form>
+    </div> <!-- edit box closed-->
+  </div> <!-- edit box closed-->
+
+
+
+
     
 </body>

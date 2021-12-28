@@ -42,6 +42,7 @@ export class userFeedComponent {
   // modal vars set for del + edit Modal
   showDelModal? : boolean;
   showEditModal? : boolean;
+  showCommentModal? : boolean;
 
   // edit form var set to any
   editForm : any;
@@ -64,6 +65,8 @@ export class userFeedComponent {
   // array to hold all video posts
   videoPosts : any = [];
 
+  // var to hold comment form data
+  commentForm : any;
 
 
   ngOnInit(){
@@ -92,6 +95,12 @@ export class userFeedComponent {
       fileName : ['', Validators.required],
       upFile : ['', Validators.required],
       date : ['']
+    })
+
+    // get form builder data, for commenting on a post
+    this.commentForm = this.formBuilder.group({
+      userName : [''],
+      commentText : ['']
     })
 
     // sets logged in user info to var
@@ -208,9 +217,6 @@ export class userFeedComponent {
       })
     }
 
-
-
-
   /* functions for delete modal appearance/disappearance */
   showDel(post:any){
     this.showDelModal = true;
@@ -229,6 +235,41 @@ export class userFeedComponent {
 
   hideDel(){
     this.showDelModal = false;
+  }
+
+  onComment(){
+
+    // user ID is set
+    this.commentForm.controls["userName"].setValue(this.userInfo.name);
+
+    this.webService.postComment(this.commentForm.value,this.myPostPath)
+      .subscribe((response : any) =>{
+        this.commentForm.reset();
+        this.posts = this.webService.getAllPosts();
+      })
+
+    // edit modal hidden
+    this.hideComment();
+  }
+
+
+  showComment(post:any){
+    this.showCommentModal = true;
+    
+    // go to top of page
+    window.scroll(0,0)
+
+    // post ID and blob path vars updated
+    this.myPostPath = post.fileLocator
+    this.myPostID = post.id
+
+    // adds user to DB upon action
+    // not very elegant way of doing this but it works
+    this.addUser();
+  }
+
+  hideComment(){
+    this.showCommentModal = false;
   }
 
 
