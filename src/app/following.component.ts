@@ -80,31 +80,35 @@ export class followingComponent {
       // followed users set to string
       this.getFollowing();
 
+      console.log(this.following);
+
       var firstIDposts : any;
 
-      // if multiple followed then split by comma
-      if (this.following.includes(',')){        
-        var ids = this.following;
-        ids =  ids.split(',');
-        this.following = ids;
-      }
+      this.posts = this.webService.getAllPostsFollowing(this.following);
 
-      // loop through for each followed ID
-      for(var id in this.following){
+      // // if multiple followed then split by comma
+      // if (this.following.includes(',')){        
+      //   var ids = this.following;
+      //   ids =  ids.split(',');
+      //   this.following = ids;
+      // }
 
-        // first id set
-        if (id == "0"){
-          firstIDposts = this.webService.getAllPostsFollowing(this.following[id]);
-        }
-        // ids after first are merged
-        else{
-          zip(firstIDposts,this.webService.getAllPostsFollowing(this.following[id]))
-          .pipe(map(x => x.flat()))
-          .subscribe(data => firstIDposts=data)
-        }
-      }
-      // posts set
-      this.posts = firstIDposts;
+      // // loop through for each followed ID
+      // for(var id in this.following){
+
+      //   // first id set
+      //   if (id == "0"){
+      //     firstIDposts = this.webService.getAllPostsFollowing(this.following[id]);
+      //   }
+      //   // ids after first are merged
+      //   else{
+      //     zip(firstIDposts,this.webService.getAllPostsFollowing(this.following[id]))
+      //     .pipe(map(x => x.flat()))
+      //     .subscribe(data => firstIDposts=data)
+      //   }
+      // }
+      // // posts set
+      // this.posts = firstIDposts;
     }
 
     else{
@@ -380,7 +384,7 @@ export class followingComponent {
     // gets all current users
     var allMyUsers:any = await this.webService.getAllUsers();
 
-    // checks if user already exists
+    // check for logged in user
     for(var userIndex in allMyUsers){
       if (allMyUsers[userIndex].id == this.userInfo.sub){
         this.following = allMyUsers[userIndex].following;
